@@ -1,7 +1,11 @@
 return {
   {
     "ray-x/guihua.lua",
-    build = "cd lua/fzy && make",
+    build = function()
+      if vim.fn.has("win32") == 0 then
+        vim.fn.system("cd lua/fzy && make")
+      end
+    end,
   },
   {
     "ray-x/go.nvim",

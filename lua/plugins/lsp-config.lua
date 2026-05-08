@@ -27,12 +27,22 @@ return {
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
       end
 
-      vim.lsp.config('*', {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      vim.lsp.enable({ 'ts_ls', 'solargraph', 'html', 'lua_ls' })
+      if vim.fn.has("nvim-0.11") == 1 then
+        vim.lsp.config('*', {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
+        vim.lsp.enable({ 'ts_ls', 'solargraph', 'html', 'lua_ls' })
+      else
+        local lspconfig = require("lspconfig")
+        local servers = { 'ts_ls', 'solargraph', 'html', 'lua_ls' }
+        for _, server in ipairs(servers) do
+          lspconfig[server].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+          })
+        end
+      end
     end,
   },
 }

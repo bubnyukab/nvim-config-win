@@ -1,91 +1,41 @@
-# nvim-config-win
+# Neovim Config (Windows)
 
-A Neovim configuration for Windows, built on [lazy.nvim](https://github.com/folke/lazy.nvim).
+Lua config managed by [lazy.nvim](https://github.com/folke/lazy.nvim). Targets native Windows — no tmux dependency.
 
 ## Requirements
 
-- [Neovim](https://neovim.io/) >= 0.9
-- [Git](https://git-scm.com/)
+- Neovim 0.10+
+- Git
+- Node.js (for `swagger-ui-watcher` and LSP servers)
+- Go toolchain (for Go development)
 - A [Nerd Font](https://www.nerdfonts.com/) (for icons)
-- Node.js (for `ts_ls` and `prettier`)
-- Go (for Go development features)
-- Ruby / Bundler (for `solargraph`, `rubocop`, `erb_lint`)
-
-## Installation
-
-```
-git clone https://github.com/bubnyukab/nvim-config-win %LOCALAPPDATA%\nvim
-```
-
-Open Neovim — lazy.nvim will bootstrap itself and install all plugins automatically.
-
-## Plugins
-
-| Plugin | Purpose |
-|--------|---------|
-| [lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager |
-| [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason.nvim](https://github.com/williamboman/mason.nvim) | LSP client & server installer |
-| [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + LuaSnip | Autocompletion & snippets |
-| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting & indentation |
-| [Telescope](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder |
-| [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | File tree |
-| [oil.nvim](https://github.com/stevearc/oil.nvim) | File manager as a buffer |
-| [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Status line |
-| [alpha-nvim](https://github.com/goolord/alpha-nvim) | Dashboard / start screen |
-| [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) | Formatting & diagnostics (stylua, prettier, rubocop, erb_lint) |
-| [go.nvim](https://github.com/ray-x/go.nvim) | Go development (tests, imports, struct fill, interface impl) |
-| [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git commands |
-| [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git hunk preview & blame |
-| [vim-test](https://github.com/vim-test/vim-test) + [vimux](https://github.com/preservim/vimux) | Test runner |
-| [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets & quotes |
-| [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hints |
-| [nvim-tmux-navigation](https://github.com/alexghergh/nvim-tmux-navigation) | Seamless tmux/nvim pane navigation |
-| [swagger-preview.nvim](https://github.com/vinnymeller/swagger-preview.nvim) | OpenAPI / Swagger preview |
-
-**Colorscheme:** `habamax` (built-in)
-
-## LSP Servers
-
-Configured via mason-lspconfig with auto-install enabled:
-
-- `ts_ls` — TypeScript / JavaScript
-- `lua_ls` — Lua
-- `html` — HTML
-- `solargraph` — Ruby
 
 ## Keymaps
 
-### General
+`<leader>` is `Space`.
+
+### Navigation
 
 | Key | Action |
 |-----|--------|
+| `<C-h/j/k/l>` | Move between splits |
+| `<C-n>` | Toggle file tree (Neo-tree) |
+| `<leader>bf` | Browse open buffers (Neo-tree float) |
+| `-` | Open parent directory in Oil (float) |
+| `<C-p>` | Find files (Telescope) |
+| `<leader>fg` | Live grep |
+| `<leader><leader>` | Recent files |
 | `<leader>h` | Clear search highlight |
-| `<leader>gf` | Format buffer (LSP) |
 
 ### LSP
 
 | Key | Action |
 |-----|--------|
-| `K` | Hover documentation |
+| `K` | Hover docs |
 | `<leader>gd` | Go to definition |
-| `<leader>gr` | Go to references |
-| `<leader>ca` | Code action |
-
-### Telescope
-
-| Key | Action |
-|-----|--------|
-| `<C-p>` | Find files |
-| `<leader>fg` | Live grep |
-| `<leader><leader>` | Recent files |
-
-### File Navigation
-
-| Key | Action |
-|-----|--------|
-| `<C-n>` | Toggle Neo-tree (left) |
-| `<leader>bf` | Neo-tree buffer list (float) |
-| `-` | Oil float (edit directory) |
+| `<leader>gr` | Find references |
+| `<leader>ca` | Code actions |
+| `<leader>gf` | Format buffer |
 
 ### Git
 
@@ -93,32 +43,78 @@ Configured via mason-lspconfig with auto-install enabled:
 |-----|--------|
 | `<leader>gp` | Preview hunk |
 | `<leader>gb` | Toggle line blame |
-
-### Go
-
-| Key | Action |
-|-----|--------|
-| `<leader>gt` | Run tests |
-| `<leader>gtf` | Run test for current function |
-| `<leader>gta` | Add test for current function |
-| `<leader>gi` | Add/organize imports |
-| `<leader>gfs` | Fill struct |
-| `<leader>gii` | Implement interface |
+| `:G ...` | Fugitive git commands |
 
 ### Testing (vim-test)
 
 | Key | Action |
 |-----|--------|
 | `<leader>t` | Run nearest test |
-| `<leader>T` | Run tests in file |
-| `<leader>a` | Run full test suite |
+| `<leader>T` | Run test file |
+| `<leader>a` | Run test suite |
 | `<leader>l` | Re-run last test |
-| `<leader>g` | Visit last test file |
+| `<leader>tv` | Visit test file |
 
-## Editor Settings
+Tests run in a native Neovim terminal (no tmux required).
 
-- 4-space indentation, `expandtab`
-- `<Space>` as leader key
-- Line numbers + relative line numbers
-- No swap files
-- Transparent background
+### Go (go.nvim)
+
+| Key | Action |
+|-----|--------|
+| `<leader>gt` | Run package tests |
+| `<leader>gtf` | Run function under cursor |
+| `<leader>gta` | Generate test for function |
+| `<leader>gi` | Add/tidy imports |
+| `<leader>gfs` | Fill struct fields |
+| `<leader>gii` | Implement interface |
+
+`goimports` runs automatically on save for `.go` files.
+
+### Completion
+
+| Key | Action |
+|-----|--------|
+| `<C-Space>` | Trigger completion |
+| `<CR>` | Confirm selection |
+| `<C-e>` | Abort completion |
+| `<C-b/f>` | Scroll docs |
+
+## Plugins
+
+| Plugin | Purpose |
+|--------|---------|
+| lazy.nvim | Plugin manager |
+| alpha-nvim | Start screen |
+| neo-tree.nvim | File tree |
+| oil.nvim | Directory editing / file manager |
+| telescope.nvim | Fuzzy finder |
+| nvim-treesitter | Syntax highlighting & indentation |
+| nvim-lspconfig + mason | LSP servers (TS, Ruby, HTML, Lua) |
+| nvim-cmp + LuaSnip | Completion & snippets |
+| none-ls.nvim | Formatting (stylua, prettier, rubocop) |
+| go.nvim | Go IDE features |
+| vim-test | Test runner |
+| gitsigns.nvim | Inline git diff & blame |
+| vim-fugitive | Full git integration |
+| lualine.nvim | Status line |
+| which-key.nvim | Keymap hints |
+| nvim-autopairs | Auto-close brackets/quotes |
+| swagger-preview.nvim | Swagger UI preview |
+
+## Colorscheme
+
+Uses `habamax` (built-in, no plugin required) with a transparent background.
+
+## LSP Servers
+
+Managed by Mason, auto-installed on first launch:
+
+- `ts_ls` — TypeScript / JavaScript
+- `solargraph` — Ruby
+- `html` — HTML
+- `lua_ls` — Lua
+
+## Notes
+
+- No tmux dependency. Split navigation uses native `<C-w>` motions.
+- `guihua.lua` skips its native `make` build step on Windows (fzy fuzzy matcher falls back gracefully).
